@@ -136,12 +136,13 @@ export default {
     }
     for (var i = 1; i <= 31; ++i) {
       if (i < 10) {
-        this.months.push("0" + i);
+        this.days.push("0" + i);
       } else {
-        this.months.push("" + i);
+        this.days.push("" + i);
       }
     }
-    for (var i = 2015; i < 2021; ++i) {
+    var date=new Date()
+    for (var i = 2015; i <= date.getFullYear(); ++i) {
       this.years.push("" + i);
     }
 
