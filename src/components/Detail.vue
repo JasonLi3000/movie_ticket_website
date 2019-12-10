@@ -292,9 +292,6 @@
       imgError() {
         this.poster = require('../assets/LostSource.png')
       },
-      goToDetail(movie) {
-        this.$router.push({name: "movie-detail", params: {id: movie._id}})
-      },
       goToList() {
         this.$router.push({name: "movie-list"})
       },

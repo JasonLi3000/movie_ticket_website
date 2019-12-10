@@ -19,7 +19,7 @@
               disabled
               text-color="#ff9900"
               score-template="{value}">
-            </el-rate>  
+            </el-rate>
           </span>
           <span class="score">{{rating.average}}</span>
           <span class="rating-people">({{this.rating.rating_people}}人评分)</span>
@@ -74,22 +74,22 @@
       },
       methods: {
           init: function() {
-              this.id = this.detail._id
-              this.casts = this.detail.casts
-              this.countries = this.detail.countries
-              this.directors = this.detail.directors
-              this.duration = this.detail.duration
-              this.genres = this.detail.genres
-              this.languages = this.detail.languages
-              this.poster = this.detail.poster
-              this.pubdate = this.detail.pubdate
-              this.rating = this.detail.rating
-              this.summary = this.detail.summary
-              this.title = this.detail.title
-              this.writers = this.detail.writers
-              this.rate = parseFloat((parseFloat(this.detail.rating.average)/2).toFixed(1))
-              if(this.detail.rating.average === "") {
-                this.rate = 0 
+              this.id = this.detail.information._id
+              this.casts = this.detail.information.casts
+              this.countries = this.detail.information.countries
+              this.directors = this.detail.information.directors
+              this.duration = this.detail.information.duration
+              this.genres = this.detail.information.genres
+              this.languages = this.detail.information.languages
+              this.poster = this.detail.information.poster
+              this.pubdate = this.detail.information.pubdate
+              this.rating = this.detail.information.rating
+              this.summary = this.detail.information.summary
+              this.title = this.detail.information.title
+              this.writers = this.detail.information.writers
+              this.rate = parseFloat((parseFloat(this.detail.information.rating.average)/2).toFixed(1))
+              if(this.detail.information.rating.average === "") {
+                this.rate = 0
                 this.rating.rating_people = 0
               }
           },
@@ -163,7 +163,7 @@
     color: #ddd;
   }
   .rating-row {
-    display: flex; 
+    display: flex;
     align-items: center;
   }
   .rating {
@@ -177,7 +177,7 @@
     font-size: 15px;
     opacity: 1;
   }
-  .casts {    
+  .casts {
     font-size: 13px;
     opacity: 1;
     line-height: 1.4;

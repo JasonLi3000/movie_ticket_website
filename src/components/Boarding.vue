@@ -1,89 +1,41 @@
 <template>
-    <div class="board">
-        <el-col :span="14" class="sub-header">排行榜</el-col>
-        <el-col :span="10" class="genre">
-        <el-select v-model="genre" placeholder="请选择">
-            <el-option
-            v-for="item in genres"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-            </el-option>
-        </el-select>
-        </el-col>
-        <div class=boarding-list>
-            <p v-for="(movie, index) in boardingRes" :key="index" @click="selectMovie(movie)" class="title">{{movie.title}}</p>
-        </div>
-        <el-col class="sub-header">口碑榜</el-col>
-        <div class=boarding-list>
-            <p v-for="(movie, index) in totalRes" :key="index" @click="selectMovie(movie)" class="title">{{movie.title}}</p>
-        </div>
+  <div class="board">
+    <el-col class="sub-header">高分榜</el-col>
+    <div class=boarding-list>
+      <p v-for="(movie, index) in recommends"
+         :key="index" @click="selectMovie(movie)"
+         class="title">{{movie.information.title}}</p>
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "Boarding",
-        props: ["movieList"],
-        data() {
-            return {
-                genre: "恐怖"
-            }
-        },
+  export default {
+    name: "Boarding",
+    props: ["movieList"],
 
-        methods: {
-            selectMovie: function(movie) {
-                this.$emit("titleSearchChanged", movie.title)
-            }
-        },
-
-        computed: {
-            genres() {
-            var genreSet = new Set()
-            this.movieList.forEach(element => {
-                element.genres.forEach(genre => {
-                genreSet.add(genre)
-                })
-            })
-            var genreOp = []
-            genreSet.forEach(element => {
-                genreOp.push({"value": element, "label": element})
-            })
-            return genreOp
-            },
-            boardingRes() {
-            var conditionList = this.movieList
-                    .filter((info) => {
-                    const text = Object.values(info.genres).join('____').toLowerCase()
-                    return text.search(this.genre.toLowerCase()) >= 0
-                    })
-            conditionList = conditionList.sort(sortByRating)
-            var result = conditionList.slice(0, 10)
-            return result
-            },
-            totalRes() {
-            var conditionList = this.movieList
-                    .filter((info) => {
-                    const text = Object.values(info.genres).join('____').toLowerCase()
-                    return text.search() >= 0
-                    })
-            conditionList = conditionList.sort(sortByRating)
-            var result = conditionList.slice(0, 10)
-            return result
-            }
-        }
+    methods: {
+      selectMovie: function(movie) {
+        this.$emit("titleSearchChanged", movie.information.title)
+      },
+      recommends() {
+        axios.post(`/api/recommend_movie_list`, {
+          'start_from': 0,
+          'limitation': 15
+        })
+          .then((res) => {
+            return res
+          })
+      }
     }
-
-    function sortByRating(movie1, movie2) {
-                return movie2.rating.average - movie1.rating.average
-            }
+  }
 </script>
 
 <style scoped>
-.board {
+  .board {
     -webkit-user-select: none
-}
-.sub-header {
+  }
+  .sub-header {
     text-align: left;
     padding-left: 12px;
     padding-top: 25px;
@@ -92,14 +44,6 @@
     line-height: 1.4;
     font-weight: 500;
     color: darkcyan
-  }
-  .genre {
-    opacity: 1;
-    line-height: 1.4;
-    font-weight: 300;
-    padding-top: 20px;
-    float: right;
-    padding-right: 8px;
   }
   .boarding-list {
     opacity: 1;
