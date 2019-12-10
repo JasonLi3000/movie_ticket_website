@@ -207,43 +207,35 @@
         dialogVisible: false,
         ticketNum: 1,
 
-        reviews: [{
-          "content": "好看",
-          "ranking": 10,
-          "review_id": 1
-        },
-          {
-            "content": "不好看",
-            "ranking": 0,
-            "review_id": 2
-          }]
+        reviews: []
       }
     },
     mounted: function() {
       axios.post(`/api/query_movie/${this.$route.params.id}`)
         .then((res) => {
-          this.title = res.data.information.title
-          this.poster = res.data.information.poster
-          this.directors = res.data.information.directors
-          this.writers = res.data.information.writers
-          this.casts = res.data.information.casts
-          this.pubdata = res.data.information.pubdata
-          this.duration = res.data.information.duration
-          this.genres = res.data.information.genres
-          this.countries = res.data.information.countries
-          this.languages = res.data.information.languages
-          this.rating = res.data.information.rating
-          this.rate = parseFloat((parseFloat(res.data.information.rating.average)/2).toFixed(1))
-          if(res.data.information.rating.average === "") {
+          var data = res.data[0]
+          this.title = data.information.title
+          this.poster = data.information.poster
+          this.directors = data.information.directors
+          this.writers = data.information.writers
+          this.casts = data.information.casts
+          this.pubdata = data.information.pubdata
+          this.duration = data.information.duration
+          this.genres = data.information.genres
+          this.countries = data.information.countries
+          this.languages = data.information.languages
+          this.rating = data.information.rating
+          this.rate = parseFloat((parseFloat(data.information.rating.average)/2).toFixed(1))
+          if(data.information.rating.average === "") {
             this.rate = 0
             this.rating.average = ""
             this.rating.rating_people = 0
             this.rating.stars = [0, 0, 0, 0, 0]
           }
-          this.summary = res.data.information.summary
-          this.price = res.data.information.price
+          this.summary = data.information.summary
+          this.price = data.information.price
           this.ticketNum = 1
-          this.reviews = res.data.reviews
+          this.reviews = data.reviews
         })
         .catch(this.getJsonInfo())
       console.log("电影ID：" + this.$route.params.id)
@@ -317,7 +309,7 @@
           {
             'item': {
             'movie_id': this.$route.params.id,
-            'movie_name': this.movie_name,
+            'movie_name': this.title,
             'price_sum': this.price * this.ticketNum,
             'movie_num': this.ticketNum
           }
