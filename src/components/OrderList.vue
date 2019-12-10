@@ -28,7 +28,7 @@
     <el-container>
       <el-header >
         <div style="display:inline-block">订单列表</div>
-        <div style="display:inline-block; text-align:right">
+        <div style="display:inline-block; float:right">
         <select model="year">
             <option value="">请选择</option>
             <option v-for="item in years" v-bind:value="item"> {{ item }}</option>
@@ -84,7 +84,7 @@ export default {
       scroll_top: 0,
       years:[2015,2016,2017,2018,2019,2020],
       months:[],
-      days:[2015,2016,2017,2018,2019,2020]
+      days:[]
     };
   },
   mounted: function() {
