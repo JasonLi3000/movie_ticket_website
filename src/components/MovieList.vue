@@ -43,12 +43,13 @@
 import MovieCard from "./MovieCard";
 import Boarding from "./Boarding";
 import axios from "axios";
-
+import Chart from "./Chart"
 export default {
   name: "MovieList",
   components: {
     MovieCard,
-    Boarding
+    Boarding,
+    Chart
   },
   data() {
     return {
