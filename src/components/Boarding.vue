@@ -1,6 +1,6 @@
 <template>
   <div class="board">
-    <el-col class="sub-header">高分榜</el-col>
+    <el-col class="sub-header">口碑榜</el-col>
     <div class=boarding-list>
       <p v-for="(movie, index) in recommend_movies"
          :key="index" @click="selectMovie(movie)"

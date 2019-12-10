@@ -194,7 +194,7 @@
     display: inline;
   }
   .director {
-    color: blue
+    font-weight: bold;
   }
   .director-part::after {
     content: " | ";

@@ -1,68 +1,20 @@
-<style scoped>
-.load-more {
-  /* font-size: 30px;*/
-  font-weight: bold;
-  color: #1da1f2;
-  text-align: center;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  background-color: white;
-  width: 100%;
-}
-
-.load-more:hover {
-  cursor: pointer;
-}
-.no-more {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  font-weight: bold;
-  color: #b9b9b9;
-}
-.el-header,
-.el-footer {
-  background-color: #b3c0d1;
-  color: #337ab7;
-  font-size: 30px;
-  text-align: center;
-  line-height: 60px;
-}
-
-.el-aside {
-  background-color: #d3dce6;
-  color: #333;
-  text-align: center;
-  line-height: 200px;
-}
-
-.el-main {
-  background-color: #e9eef3;
-  color: #333;
-  text-align: center;
-  line-height: 160px;
-}
-
-body > .el-container {
-  margin-bottom: 40px;
-}
-
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-  line-height: 260px;
-}
-
-.el-container:nth-child(7) .el-aside {
-  line-height: 320px;
-}
-</style>
-
 <template>
   <div>
+    <el-menu
+      :default-active="onRoutes"
+      mode="horizontal"
+      @select="handleSelect"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b"
+      :router="true">
+      <el-menu-item index="order-list" style="width: 20%; text-align: center;">订单查询</el-menu-item>
+      <el-menu-item index="chart" style="width: 20%; text-align: center;">销售概况</el-menu-item>
+      <el-button type="warning"
+                 style="margin-top: 10px; margin-left: 48%; width: 10%;"
+                 @click="goToIndex">管理员退出</el-button>
+    </el-menu>
     <el-container>
-      <el-header>订单列表</el-header>
-
       <el-main>
         <el-row>
           <select v-model="year">
@@ -80,14 +32,14 @@ body > .el-container {
             <option v-for="item in days" v-bind:value="item">{{ item }}</option>
           </select>
           <span>日</span>
-          <el-button @click="selectOrder()">筛选</el-button>
+          <el-button plain round @click="selectOrder()">筛选</el-button>
         </el-row>
         <el-table :data="orderTable" stripe style="width: 100%">
-          <el-table-column prop="order_id" label="订单 ID" sortable min-width="100"></el-table-column>
-          <el-table-column prop="movie_id" label="电影 ID" sortable min-width="160"></el-table-column>
-          <el-table-column prop="movie_name" label="电影名称" sortable min-width="240"></el-table-column>
-          <el-table-column prop="movie_num" label="购票数" sortable min-width="100"></el-table-column>
-          <el-table-column prop="price_sum" label="总价" sortable min-width="160"></el-table-column>
+          <el-table-column prop="order_id" label="订单 ID" sortable min-width="120"></el-table-column>
+          <el-table-column prop="movie_id" label="电影 ID" sortable min-width="120"></el-table-column>
+          <el-table-column prop="movie_name" label="电影名称" sortable min-width="200"></el-table-column>
+          <el-table-column prop="movie_num" label="购票数" sortable min-width="120"></el-table-column>
+          <el-table-column prop="price_sum" label="总价" sortable min-width="120"></el-table-column>
           <el-table-column prop="create_time" label="创建时间" sortable min-width="200"></el-table-column>
         </el-table>
       </el-main>
@@ -175,13 +127,55 @@ export default {
       this.orderTable = [];
       this.start_from = 0;
       this.generateData();
+    },
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+      // this.$router.push({name: key})
+    },
+    goToIndex() {
+      this.$router.push({name: "index"})
     }
   },
   updated: function() {
     this.$nextTick(function() {
       document.documentElement.scrollTop = this.scroll_top;
     });
+  },
+  computed: {
+    onRoutes () {
+      return this.$route.path
+    }
   }
 };
 </script>
 
+<style scoped>
+  .el-main {
+    background-color: #e9eef3;
+    color: #333;
+    text-align: center;
+    line-height: 100px;
+  }
+  .load-more {
+    /* font-size: 30px;*/
+    font-weight: bold;
+    color: rgb(84, 92, 100);
+    text-align: center;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: white;
+    width: 100%;
+  }
+
+  .load-more:hover {
+    cursor: pointer;
+  }
+  .no-more {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #b9b9b9;
+  }
+</style>

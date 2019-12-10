@@ -1,7 +1,11 @@
 <template>
   <div>
     <el-container>
-      <el-header>{{this.detail.title}}</el-header>
+      <el-header>
+        {{this.detail.title}}
+        <el-button type="warning" style="float: right; margin-top: 10px;"
+                   @click="goToMovieList">返回电影列表</el-button>
+      </el-header>
       <el-main>
         <div class="container">
           <img :src="poster" :alt="title" @error="imgError()" class="poster" />
@@ -152,17 +156,15 @@
         </div>
         <div class="review">
           <div class="review-word">评价</div><br>
-          <div v-for="item in reviews">
-            <div>
-              <div style="color: RGB(57, 38, 184)">匿名用户{{item.review_id}}</div>
-              <div style="color: RGB(31, 158, 255)">评分：{{item.ranking}}</div>
+          <div v-for="item in reviews" style="margin-bottom: 25px;">
+            <div style="margin-top: 3px; margin-bottom: 6px;">
+              <span style="color: rgb(0, 119, 34);">匿名用户{{item.review_id}}</span>
+              &nbsp;
+              <span style="color: #337ab7;">分数: {{item.ranking}}分</span>
             </div>
             <div>{{item.content}}</div>
-            <br>
-            <br>
           </div>
         </div>
-        <el-button type="primary" @click="goToList">返回电影列表</el-button>
       </el-main>
     </el-container>
   </div>
@@ -284,7 +286,7 @@
       imgError() {
         this.poster = require('../assets/LostSource.png')
       },
-      goToList() {
+      goToMovieList() {
         this.$router.push({name: "movie-list"})
       },
       openDialog() {
@@ -337,39 +339,16 @@
 </script>
 
 <style scoped>
-  .el-header, .el-footer {
-    background-color: #B3C0D1;
-    color: #337ab7;
-    font-size: 30px;
+  .el-header {
+    background-color: RGB(84, 92, 100);
+    color: white;
+    font-size: 18px;
     text-align: center;
     line-height: 60px;
   }
-
-  .el-aside {
-    background-color: #D3DCE6;
-    color: #333;
-    text-align: center;
-    line-height: 200px;
-  }
-
   .el-main {
-    background-color: #E9EEF3;
-    color: #333;
     text-align: center;
-    line-height: 160px;
-  }
-
-  body > .el-container {
-    margin-bottom: 40px;
-  }
-
-  .el-container:nth-child(5) .el-aside,
-  .el-container:nth-child(6) .el-aside {
-    line-height: 260px;
-  }
-
-  .el-container:nth-child(7) .el-aside {
-    line-height: 320px;
+    line-height: 130px;
   }
 
   .container {
@@ -380,11 +359,6 @@
     text-align: left;
     line-height: 1.6;
   }
-  .header {
-    display: flex;
-    align-items: left;
-    font-size: 20px;
-  }
   .poster {
     margin-right: 12px;
     flex-shrink: 0;
@@ -394,7 +368,6 @@
   .check {
     font-size: 15px;
     opacity: 1;
-    font-weight: 350;
     letter-spacing: 0.5px;
   }
   .genre {

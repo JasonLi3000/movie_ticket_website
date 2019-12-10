@@ -3,9 +3,9 @@
     <el-container>
       <el-header>身份验证</el-header>
       <el-main>
-        <el-button @click="goToMovieList">我是用户</el-button>
+        <el-button type="warning" round @click="goToMovieList">用户登陆</el-button>
         <br />
-        <el-button @click="goToOrderList">我是管理员</el-button>
+        <el-button type="warning" round @click="goToOrderList">管理员登陆</el-button>
       </el-main>
     </el-container>
   </div>
@@ -26,38 +26,18 @@
 </script>
 
 <style scoped>
-  .el-header, .el-footer {
-    background-color: #B3C0D1;
-    color: #337ab7;
-    font-size: 30px;
+  .el-header {
+    background-color: RGB(84, 92, 100);
+    color: white;
+    font-size: 18px;
     text-align: center;
     line-height: 60px;
-  }
-
-  .el-aside {
-    background-color: #D3DCE6;
-    color: #333;
-    text-align: center;
-    line-height: 200px;
   }
 
   .el-main {
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
-    line-height: 160px;
-  }
-
-  body > .el-container {
-    margin-bottom: 40px;
-  }
-
-  .el-container:nth-child(5) .el-aside,
-  .el-container:nth-child(6) .el-aside {
-    line-height: 260px;
-  }
-
-  .el-container:nth-child(7) .el-aside {
-    line-height: 320px;
+    line-height: 130px;
   }
 </style>

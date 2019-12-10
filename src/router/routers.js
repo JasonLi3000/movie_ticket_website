@@ -20,6 +20,11 @@ const routers = [
     component: (resolve) => require(['../components/OrderList.vue'], resolve)
   },
   {
+    path: "/chart",
+    name: "chart",
+    component: (resolve) => require(['../components/Chart.vue'], resolve)
+  },
+  {
     path: "/",
     redirect: "index"
   },
