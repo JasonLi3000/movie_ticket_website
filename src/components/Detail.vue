@@ -219,7 +219,7 @@
           this.directors = data.information.directors
           this.writers = data.information.writers
           this.casts = data.information.casts
-          this.pubdata = data.information.pubdata
+          this.pubdate = JSON.parse(data.information.pubdate)
           this.duration = data.information.duration
           this.genres = data.information.genres
           this.countries = data.information.countries

@@ -24,7 +24,8 @@
     },
     methods: {
       selectMovie: function(movie) {
-        this.$emit("titleSearchChanged", movie.information.title)
+        console.log(movie)
+        this.$router.push({name: "movie-detail", params: {id: movie.movie_id}})
       },
       recommends() {
         axios.post(`/api/recommend_movie_list`, {

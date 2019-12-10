@@ -82,7 +82,7 @@
               this.genres = this.detail.information.genres
               this.languages = this.detail.information.languages
               this.poster = this.detail.information.poster
-              this.pubdate = this.detail.information.pubdate
+              this.pubdate = JSON.parse(this.detail.information.pubdate)
               this.rating = this.detail.information.rating
               this.summary = this.detail.information.summary
               this.title = this.detail.information.title
