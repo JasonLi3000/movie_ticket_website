@@ -3,17 +3,7 @@
     <el-container>
       <el-header>
         <el-col :span="6">
-          <el-input v-model="search" placeholder="请输入需要检索的内容"></el-input>
-        </el-col>
-        <el-col :span="2">
-          <el-select v-model="command" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+          <el-input v-model="search" placeholder="请输入需要检索的电影名称"></el-input>
         </el-col>
         <el-col :span="10" class="header-text">电 影 列 表</el-col>
         <el-col :span="6">
@@ -35,7 +25,7 @@
           </div>
         </el-aside>
         <el-main>
-          <el-row v-for="(movie,index) in res" :key="index">
+          <el-row v-for="(movie,index) in movies" :key="index">
             <el-col :span=24>
               <MovieCard :detail = "movie" />
             </el-col>
@@ -49,6 +39,8 @@
 <script>
   import MovieCard from './MovieCard'
   import Boarding from './Boarding'
+  import axios from 'axios'
+
   export default {
     name: 'MovieList',
     components: {
@@ -63,93 +55,45 @@
         totalMovie: 0,
         search: '',
         oldSearch: '',
-        command: '全文检索',
-        options: [{
-          value: '按名称',
-          label: '按名称'
-        }, {
-          value: '按导演',
-          label: '按导演'
-        }, {
-          value: '按演员',
-          label: '按演员'
-        },{
-          value: '全文检索',
-          label: '全文检索'
-        }],
         genre: ""
       }
     },
 
     mounted: function() {
-      this.getJsonInfo()
+      axios.post(`/api/query_movie_list`,{start_from:0,limitation:200}).then((res) => {
+        this.movies = res.data
+        console.log(this.movies)
+        this.totalMovie = res.data.length
+      }).catch((res) => {
+        console.log(res)
+      })
     },
 
     methods: {
-      getJsonInfo: function() {
-        this.$http.options.emulateJSON = true
-        this.$http.get('./static/films.json').then(function(response){
-          this.movies = response.data
-          this.totalMovie = this.movies.length
-        }).catch(function(response){
-          console.log(response)
-        })
-      },
       handleCurrentChange(val) {
         this.currentPage = val
       },
       searchTitle(movieTitle) {
-        this.command = "按名称"
         this.search = movieTitle
-      }
-    },
-
-    computed: {
-      res() {
+      },
+      movieShowed() {
         if(this.search != this.oldSearch){
           this.currentPage = 1
           this.oldSearch = this.search
         }
         const val = this.currentPage
-        var conditionList = this.movies
-          .filter((info) => {
-            const text = Object.values(info).join('____').toLowerCase()
-            return text.search(this.search.toLowerCase()) >= 0
+
+        axios.post(`/api/query_movie_list`, {
+          'start_from': 0,
+          'limitation': 200,
+          'search_key': this.search
+        })
+          .then((res) => {
+            this.totalMovie = res.data.length
+            console.log(this.totalMovie)
+            let result = res.data.slice((val-1)*this.pageSize, val*this.pageSize)
+            return result
           })
-        var command = this.command
-        if(command === "按名称") {
-          conditionList = this.movies
-            .filter((info) => {
-              const text = Object.values(info.title).join('').toLowerCase()
-              return text.search(this.search.toLowerCase()) >= 0
-            })
-        }
-        if(command === "按导演") {
-          conditionList = this.movies
-            .filter((info) => {
-              var directorList = []
-              info.directors.forEach(element => {
-                directorList.push(element["name"])
-              })
-              const text = Object.values(directorList).join('____').toLowerCase()
-              return text.search(this.search.toLowerCase()) >= 0
-            })
-        }
-        if(command === "按演员") {
-          conditionList = this.movies
-            .filter((info) => {
-              var actorList = []
-              info.casts.forEach(element => {
-                actorList.push(element["name"])
-              })
-              const text = Object.values(actorList).join('____').toLowerCase()
-              return text.search(this.search.toLowerCase()) >= 0
-            })
-        }
-        this.totalMovie = conditionList.length
-        console.log(this.totalMovie)
-        var result = conditionList.slice((val-1)*this.pageSize, val*this.pageSize)
-        return result
       }
     }
   }
