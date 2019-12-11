@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-menu
-      :default-active="onRoutes"
+      :default-active="activeIndex"
       mode="horizontal"
       @select="handleSelect"
       background-color="#545c64"
@@ -57,96 +57,92 @@
 </template>
 
 <script>
-import axios from "axios";
+  import axios from "axios";
 
-export default {
-  name: "OrderList",
-  data() {
-    return {
-      orderTable: [],
-      start_from: 0,
-      limitation: 10,
-      has_more: true,
-      is_loading: false,
-      scroll_top: 0,
-      years: [],
-      months: [],
-      days: [],
-      year: "%",
-      day: "",
-      month: "%",
-      date_str: "%-%-%"
-    };
-  },
-  mounted: function() {
-    for (var i = 1; i <= 12; ++i) {
-      if (i < 10) {
-        this.months.push("0" + i);
-      } else {
-        this.months.push("" + i);
-      }
-    }
-    for (var i = 1; i <= 31; ++i) {
-      if (i < 10) {
-        this.days.push("0" + i);
-      } else {
-        this.days.push("" + i);
-      }
-    }
-    var date=new Date()
-    for (var i = 2015; i <= date.getFullYear(); ++i) {
-      this.years.push("" + i);
-    }
-
-    this.generateData();
-  },
-  methods: {
-    generateData: function() {
-      this.is_loading = true;
-      this.scroll_top = document.documentElement.scrollTop;
-      axios
-        .post(`/api/query_order_list`, {
-          start_from: this.start_from,
-          limitation: this.limitation,
-          time_limitation: this.date_str
-        })
-        .then(res => {
-          this.start_from += this.limitation;
-          if (res.data.length == 0) {
-            this.has_more = false;
-          } else {
-            this.has_more = true;
-          }
-          this.orderTable = this.orderTable.concat(res.data);
-          this.is_loading = false;
-        });
+  export default {
+    name: "OrderList",
+    data() {
+      return {
+        activeIndex: "order-list",
+        orderTable: [],
+        start_from: 0,
+        limitation: 10,
+        has_more: true,
+        is_loading: false,
+        scroll_top: 0,
+        years: [],
+        months: [],
+        days: [],
+        year: "%",
+        day: "",
+        month: "%",
+        date_str: "%-%-%"
+      };
     },
-    selectOrder: function() {
-      this.date_str = this.year + "-" + this.month + "-" + this.day + "%";
-      console.log(this.date_str);
-      this.orderTable = [];
-      this.start_from = 0;
+    mounted: function() {
+      for (var i = 1; i <= 12; ++i) {
+        if (i < 10) {
+          this.months.push("0" + i);
+        } else {
+          this.months.push("" + i);
+        }
+      }
+      for (var i = 1; i <= 31; ++i) {
+        if (i < 10) {
+          this.days.push("0" + i);
+        } else {
+          this.days.push("" + i);
+        }
+      }
+      var date=new Date()
+      for (var i = 2015; i <= date.getFullYear(); ++i) {
+        this.years.push("" + i);
+      }
+
       this.generateData();
     },
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-      // this.$router.push({name: key})
+    methods: {
+      generateData: function() {
+        this.is_loading = true;
+        this.scroll_top = document.documentElement.scrollTop;
+        axios
+          .post(`/api/query_order_list`, {
+            start_from: this.start_from,
+            limitation: this.limitation,
+            time_limitation: this.date_str
+          })
+          .then(res => {
+            this.start_from += this.limitation;
+            if (res.data.length == 0) {
+              this.has_more = false;
+            } else {
+              this.has_more = true;
+            }
+            this.orderTable = this.orderTable.concat(res.data);
+            this.is_loading = false;
+          });
+      },
+      selectOrder: function() {
+        this.date_str = this.year + "-" + this.month + "-" + this.day + "%";
+        console.log(this.date_str);
+        this.orderTable = [];
+        this.start_from = 0;
+        this.generateData();
+      },
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+        // this.$router.push({name: key})
+      },
+      goToIndex() {
+        this.$router.push({name: "index"})
+      }
     },
-    goToIndex() {
-      this.$router.push({name: "index"})
+    updated: function() {
+      this.$nextTick(function() {
+        document.documentElement.scrollTop = this.scroll_top;
+      });
     }
-  },
-  updated: function() {
-    this.$nextTick(function() {
-      document.documentElement.scrollTop = this.scroll_top;
-    });
-  },
-  computed: {
-    onRoutes () {
-      return this.$route.path
-    }
-  }
-};
+  };
 </script>
 
 <style scoped>
