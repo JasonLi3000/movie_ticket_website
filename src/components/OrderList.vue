@@ -17,20 +17,20 @@
     <el-container>
       <el-main>
         <el-row>
-          <select v-model="year">
-            <option value="%">请选择</option>
-            <option v-for="item in years" v-bind:value="item">{{ item }}</option>
-          </select>
+          <el-select v-model="year">
+            <el-option value="%" label="请选择"></el-option>
+            <el-option v-for="item in years" v-bind:value="item">{{ item }}</el-option>
+          </el-select>
           <span>年</span>
-          <select v-model="month">
-            <option value="%">请选择</option>
-            <option v-for="item in months" v-bind:value="item">{{ item }}</option>
-          </select>
+          <el-select v-model="month">
+            <el-option value="%" label="请选择"></el-option>
+            <el-option v-for="item in months" v-bind:value="item">{{ item }}</el-option>
+          </el-select>
           <span>月</span>
-          <select v-model="day">
-            <option value>请选择</option>
-            <option v-for="item in days" v-bind:value="item">{{ item }}</option>
-          </select>
+          <el-select v-model="day">
+            <el-option value="" label="请选择"></el-option>
+            <el-option v-for="item in days" v-bind:value="item">{{ item }}</el-option>
+          </el-select>
           <span>日</span>
           <el-button plain round @click="selectOrder()">筛选</el-button>
         </el-row>
